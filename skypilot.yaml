@@ -1,0 +1,26 @@
+name: test-cluster
+
+file_mounts:
+  # ~/.aws/credentials: /root/.aws/credentials
+  /images:
+    name: yz-ml-metaflow
+    store: s3
+    mode: MOUNT_CACHED
+
+resources:
+  autostop: 5
+  # accelerators: {'L4:1', 'T4:1', 'A100:1', 'V100:1'}
+    
+  # use_spot: true
+
+  any_of:
+    - infra: gcp/europe-west1
+    - infra: gcp/europe-west2
+
+workdir: .
+
+run: |
+  ls -lash /images
+  sleep 30 && echo "hello world"
+
+secrets: {}
