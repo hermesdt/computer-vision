@@ -60,6 +60,7 @@ def create_optimizer(model: nn.Module, cfg: DictConfig) -> optim.Optimizer:
 
 def create_trainer(
     cfg: DictConfig,
+    full_cfg: DictConfig,
     model: nn.Module,
     train_dataloader: DataLoader,
     val_dataloader: DataLoader | None,
@@ -76,6 +77,10 @@ def create_trainer(
         n_epochs=cfg["n_epochs"],
         save_every=cfg["save_every"],
         grad_clip=cfg.get("grad_clip", None),
+        wandb_config={
+            "project": "computer-vision",
+            "config": OmegaConf.to_container(full_cfg, resolve=True),
+        },
     )
     return trainer
 
@@ -89,6 +94,7 @@ def main(cfg: DictConfig):
 
     trainer = create_trainer(
         cfg["training"],
+        cfg,
         model,
         train_dataloader,
         val_dataloader,

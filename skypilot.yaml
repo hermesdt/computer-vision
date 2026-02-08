@@ -1,11 +1,14 @@
 name: test-cluster
 
-file_mounts:
-  # ~/.aws/credentials: /root/.aws/credentials
-  /images:
-    name: yz-ml-metaflow
-    store: s3
-    mode: MOUNT_CACHED
+# file_mounts:
+#   # ~/.aws/credentials: /root/.aws/credentials
+#   /images:
+#     name: yz-ml-metaflow
+#     store: s3
+#     mode: MOUNT_CACHED
+
+secrets:
+  WANDB_API_KEY: WANDB_API_KEY
 
 resources:
   autostop: 5
@@ -20,7 +23,6 @@ resources:
 workdir: .
 
 run: |
-  ls -lash /images
-  sleep 30 && echo "hello world"
+  python main.py --epoch 1
 
 secrets: {}
